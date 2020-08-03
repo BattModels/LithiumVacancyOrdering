@@ -1,1 +1,1 @@
-# NMCVacancyOrdering
+#Lithium Vacancy Ordering
