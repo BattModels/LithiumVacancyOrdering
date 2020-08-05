@@ -9,7 +9,7 @@ import math
 import random
 from numpy.random import rand
 from ase import Atoms
-import pdb
+
 
 class VacancyOrdering:
     """
@@ -145,8 +145,7 @@ class VacancyOrdering:
         if monoclinic:
             volumes =[]
             energies=[]
-            #import pdb
-            #pdb.set_trace()
+
             for x in np.linspace(1-step,1+step,5):
                 cell[0,0] = a*x
                 self.atoms.set_cell(cell, scale_atoms=True)
@@ -433,9 +432,6 @@ class VacancyOrdering:
                 self.Va_pos[j] = self.pos[i].copy()
                 self.pos[i] = Li_pos.copy()
                 self.atoms.set_positions(self.pos)
-                if self.energy != self.atoms.get_potential_energy():
-                    #pdb.set_trace()
-                    print('fail',str(self.energy - self.atoms.get_potential_energy()))
 
     def initialize_vacancy(self, n_Va, relax=False, fmax=None):
 
@@ -511,7 +507,7 @@ class VacancyOrdering:
             
         self.energy=self.atoms.get_potential_energy()
         self.energy_vals.append(self.energy)
-        print(self.energy)
+
 
 
 
@@ -566,7 +562,7 @@ class VacancyOrdering:
                 self.sweep(kT, volume_change=True)
                 #self.energy_vals.append(self.energy)
             #self.optimize_struct(step=0.01, N_step=5, relax=False, fmax=0.5, relax_steps=2, monoclinic=monoclinic)
-            print(self.energy)
+
 
         cell = self.atoms.get_cell()
 
@@ -599,23 +595,21 @@ class VacancyOrdering:
         sym = self.atoms.get_chemical_symbols()
 
         self.N = len([atom for atom in sym if atom=='Li']) #Number of MC spots
-        self.initialize_vacancy(num_vacancies, relax=True, fmax=0.5)
+        self.initialize_vacancy(num_vacancies, relax=False, fmax=0.5)
         
-        '''
+
         self.energy = self.atoms.get_potential_energy()
         self.energy_vals = [self.energy]
 
         self.pos = self.atoms.get_positions()
 
-        #T=1000
-        #kT= T*8.6173303*10**(-5) 
+
         self.N_Li = len(self.Li_coords)                                                                             
         self.N = 1 # to trick the simulate function
         for s in range(num_sweeps):
-            #self.swap()
-            self.simulate(1500,1)
-            #self.sweep(kT, volume_change=True)
+            self.swap()
+
 
         print(np.mean(self.energy_vals))
         
-        '''
+
